@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Amplify, { Hub, Logger } from 'aws-amplify';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SignIn from './components/Signin';
 import SignUp from './components/SignUp.jsx';
 
@@ -35,10 +36,16 @@ function App() {
   Hub.listen('auth', listener);
 
   return (
-    <div>
-      <SignIn />
-      <SignUp />
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/sign-up">
+          <SignUp />
+        </Route>
+        <Route path="/">
+          <SignIn />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 

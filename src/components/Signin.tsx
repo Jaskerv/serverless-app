@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { Auth } from 'aws-amplify';
+import { Link } from 'react-router-dom';
 
 interface ISignInProps {
 }
@@ -26,31 +27,34 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   const { email, password } = values;
 
   return (
-    <form
-      onSubmit={handleSubmit}
-    >
-      <input
-        type="email"
-        placeholder="Email"
-        required
-        value={email}
-        name="email"
-        onChange={handleChange}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        required
-        value={password}
-        name="password"
-        onChange={handleChange}
-      />
-      <button
-        type="submit"
+    <>
+      <form
+        onSubmit={handleSubmit}
       >
-        Sign In
-      </button>
-    </form>
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          value={email}
+          name="email"
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          required
+          value={password}
+          name="password"
+          onChange={handleChange}
+        />
+        <button
+          type="submit"
+        >
+          Sign In
+        </button>
+      </form>
+      <Link to="/sign-up">Sign Up</Link>
+    </>
   );
 };
 
