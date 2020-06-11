@@ -1,18 +1,18 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authserverlessappUserPoolId": {
+        "authServerlessWebAppUserPoolId": {
             "Type": "String",
-            "Default": "authserverlessappUserPoolId"
+            "Default": "authServerlessWebAppUserPoolId"
         },
         
-        "authserverlessappAppClientID": {
+        "authServerlessWebAppAppClientID": {
             "Type": "String",
-            "Default": "authserverlessappAppClientID"
+            "Default": "authServerlessWebAppAppClientID"
         },
-        "authserverlessappAppClientIDWeb": {
+        "authServerlessWebAppAppClientIDWeb": {
             "Type": "String",
-            "Default": "authserverlessappAppClientIDWeb"
+            "Default": "authServerlessWebAppAppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -43,7 +43,7 @@
               "Precedence" : 1,
               
               "UserPoolId" : {
-                "Ref": "authserverlessappUserPoolId"
+                "Ref": "authServerlessWebAppUserPoolId"
               } 
             }
         },

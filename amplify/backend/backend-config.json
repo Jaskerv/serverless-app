@@ -6,7 +6,7 @@
             "dependsOn": [
                 {
                     "category": "auth",
-                    "resourceName": "serverlessapp",
+                    "resourceName": "ServerlessWebApp",
                     "attributes": [
                         "UserPoolId",
                         "AppClientIDWeb",
@@ -15,7 +15,7 @@
                 }
             ]
         },
-        "serverlessapp": {
+        "ServerlessWebApp": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
             "dependsOn": []

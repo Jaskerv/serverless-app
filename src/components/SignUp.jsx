@@ -49,7 +49,7 @@ function SignUp() {
   } = formik;
 
   return (
-    <>
+    <div>
       <form
         onSubmit={handleSubmit}
       >
@@ -87,7 +87,7 @@ function SignUp() {
         <button type="submit">Sign Up</button>
       </form>
       {userSignUp && <SignUpVerification username={userSignUp.user.username} />}
-    </>
+    </div>
   );
 }
 

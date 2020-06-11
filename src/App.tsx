@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Amplify, { Hub, Logger } from 'aws-amplify';
+import {
+  BrowserRouter, Route, Switch,
+} from 'react-router-dom';
 import SignIn from './components/Signin';
 import SignUp from './components/SignUp.jsx';
 
@@ -12,7 +15,7 @@ function App() {
   const listener = (data) => {
     switch (data.payload.event) {
       case 'signIn':
-        logger.info('user signed in'); // [ERROR] My-Logger - user signed in
+        logger.info('user signed in');
         break;
       case 'signUp':
         logger.info('user signed up');
@@ -35,10 +38,16 @@ function App() {
   Hub.listen('auth', listener);
 
   return (
-    <div>
-      <SignIn />
-      <SignUp />
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <SignIn />
+        </Route>
+        <Route path="/sign-up">
+          <SignUp />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 

@@ -1,6 +1,6 @@
 {
-    "resourceNameTruncated": "serverea3c2f4e",
-    "userPoolName": "serverlessappuserpool",
+    "resourceNameTruncated": "Serverc7cd255d",
+    "userPoolName": "ServerlessWebApp",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -10,7 +10,7 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
+    "emailVerificationSubject": "Welcome to Jono Yan's Serverless Web APp",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
@@ -21,7 +21,7 @@
         "name"
     ],
     "userpoolClientGenerateSecret": true,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "7",
     "userpoolClientWriteAttributes": [
         "birthdate",
         "email",
@@ -32,11 +32,11 @@
         "email",
         "name"
     ],
-    "userpoolClientLambdaRole": "serverea3c2f4e_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "Serverc7cd255d_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": true,
     "useDefault": "manual",
     "authSelections": "userPoolOnly",
-    "resourceName": "serverlessapp",
+    "resourceName": "ServerlessWebApp",
     "usernameAttributes": [
         "email"
     ],
