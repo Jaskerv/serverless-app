@@ -1,31 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { withAuthenticator } from '@aws-amplify/ui-react';
+import React, { useState } from 'react';
+import Amplify, { Hub, Logger } from 'aws-amplify';
+import SignIn from './components/Signin';
+import SignUp from './components/SignUp.jsx';
+
+Amplify.Logger.LOG_LEVEL = 'VERBOSE';
+
+const logger = new Logger('App');
 
 function App() {
+  const [user, setUser] = useState();
+  const listener = (data) => {
+    switch (data.payload.event) {
+      case 'signIn':
+        logger.info('user signed in'); // [ERROR] My-Logger - user signed in
+        break;
+      case 'signUp':
+        logger.info('user signed up');
+        break;
+      case 'signOut':
+        logger.info('user signed out');
+        break;
+      case 'signIn_failure':
+        logger.error('user sign in failed');
+        break;
+      case 'configured':
+        logger.info('the Auth module is configured');
+        break;
+      default:
+        logger.info('No Auth State Change');
+        break;
+    }
+  };
+
+  Hub.listen('auth', listener);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SignIn />
+      <SignUp />
     </div>
   );
 }
 
-export default withAuthenticator(App);
+export default App;
