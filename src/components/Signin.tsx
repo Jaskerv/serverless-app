@@ -1,7 +1,9 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { Auth } from 'aws-amplify';
+import { Auth, Logger } from 'aws-amplify';
 import { Link } from 'react-router-dom';
+
+const logger = new Logger('Sign In');
 
 interface ISignInProps {
 }
@@ -19,7 +21,11 @@ const initialValues: SignIn = {
 const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   const formik = useFormik({
     initialValues,
-    onSubmit: (values) => {
+    onSubmit: ({ email, password }) => {
+      Auth.signIn(email, password)
+        .then((signInResponse) => {
+          logger.info('Successful', signInResponse);
+        }).catch((error) => logger.error('Error'));
     },
   });
 

@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
-import Amplify, { Hub, Logger } from 'aws-amplify';
+import Amplify, { Hub, Logger, Auth } from 'aws-amplify';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { CognitoUser } from 'amazon-cognito-identity-js';
 import SignIn from './components/Signin';
-import SignUp from './components/SignUp.jsx';
+import SignUp from './components/SignUp';
 
-Amplify.Logger.LOG_LEVEL = 'VERBOSE';
+Amplify.Logger.LOG_LEVEL = 'INFO';
 
 const logger = new Logger('App');
 
+interface User {
+  cognitoUser: CognitoUser;
+  name: string;
+}
+
 function App() {
-  const [user, setUser] = useState();
-  const listener = (data) => {
-    switch (data.payload.event) {
-      case 'signIn':
-        logger.info('user signed in'); // [ERROR] My-Logger - user signed in
-        break;
+  const [user, setUser] = useState<User|null>();
+
+  const listener = ({ payload }) => {
+    switch (payload.event) {
+      case 'signIn': {
+        logger.info('user signed in');
+        const signedInUser: User = {
+          cognitoUser: payload.data,
+          name: payload?.data?.attributes?.name,
+        };
+        setUser(signedInUser);
+        break; }
       case 'signUp':
         logger.info('user signed up');
         break;
       case 'signOut':
         logger.info('user signed out');
+        setUser(null);
         break;
       case 'signIn_failure':
         logger.error('user sign in failed');
@@ -37,6 +50,9 @@ function App() {
 
   return (
     <BrowserRouter>
+      <nav>
+        {user?.name}
+      </nav>
       <Switch>
         <Route path="/sign-up">
           <SignUp />
