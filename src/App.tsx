@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import Amplify, { Hub, Logger, Auth } from 'aws-amplify';
+import Amplify, { Hub, Logger } from 'aws-amplify';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { CognitoUser } from 'amazon-cognito-identity-js';
-import SignIn from './components/Signin';
-import SignUp from './components/SignUp';
+import SignIn from './components/Authentication/Signin';
+import SignUp from './components/Authentication/SignUp';
+import NavBar from './components/Authentication/NavBar';
+import './App.css';
 
 Amplify.Logger.LOG_LEVEL = 'INFO';
 
@@ -13,7 +15,6 @@ interface User {
   cognitoUser: CognitoUser;
   name: string;
 }
-
 function App() {
   const [user, setUser] = useState<User|null>();
 
@@ -50,17 +51,19 @@ function App() {
 
   return (
     <BrowserRouter>
-      <nav>
-        {user?.name}
-      </nav>
-      <Switch>
-        <Route path="/sign-up">
-          <SignUp />
-        </Route>
-        <Route path="/">
-          <SignIn />
-        </Route>
-      </Switch>
+      <div className="full-size">
+        <nav>
+          <NavBar />
+        </nav>
+        <Switch>
+          <Route path="/sign-up">
+            <SignUp />
+          </Route>
+          <Route path="/">
+            <SignIn />
+          </Route>
+        </Switch>
+      </div>
     </BrowserRouter>
   );
 }

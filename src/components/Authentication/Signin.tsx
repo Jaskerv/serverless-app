@@ -5,9 +5,6 @@ import { Link } from 'react-router-dom';
 
 const logger = new Logger('Sign In');
 
-interface ISignInProps {
-}
-
 interface SignIn {
   email: string;
   password: string;
@@ -18,14 +15,14 @@ const initialValues: SignIn = {
   password: '',
 };
 
-const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
+const SignIn: React.FunctionComponent = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: ({ email, password }) => {
       Auth.signIn(email, password)
         .then((signInResponse) => {
           logger.info('Successful', signInResponse);
-        }).catch((error) => logger.error('Error'));
+        }).catch((error) => logger.error('Error', error));
     },
   });
 
