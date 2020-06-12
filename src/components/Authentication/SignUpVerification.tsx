@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
+import { useHistory } from 'react-router-dom';
 
 const logger = new Logger('Sign Up Verification');
 
@@ -17,12 +18,14 @@ const initialValues: VerificationCode = {
 };
 
 function SignUpVerification({ username }: Props): ReactElement {
+  const history = useHistory();
   const formik = useFormik({
     initialValues,
     onSubmit: ({ code }) => {
       Auth.confirmSignUp(username, code)
         .then((verificationResponse) => {
           logger.info({ verificationResponse });
+          history.push('/');
         }).catch((error) => logger.error(error));
     },
   });
