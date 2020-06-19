@@ -2,15 +2,12 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
 import { Link } from 'react-router-dom';
+import { SignInForm } from './types';
 
 const logger = new Logger('Sign In');
 
-interface SignIn {
-  email: string;
-  password: string;
-}
 
-const initialValues: SignIn = {
+const initialValues: SignInForm = {
   email: '',
   password: '',
 };

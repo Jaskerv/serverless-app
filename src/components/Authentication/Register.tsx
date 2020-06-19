@@ -2,25 +2,20 @@ import React, { ReactElement, useState } from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
 import { ISignUpResult } from 'amazon-cognito-identity-js';
-import SignUpVerification from './SignUpVerification';
+import SignUpVerification from './RegistrationVerification/RegistrationVerification';
+import { RegistrationForm } from './types';
 
 const logger = new Logger('Sign Up');
 
-interface SignUp {
-  name: string;
-  email: string;
-  birthdate: string
-  password: string;
-}
 
-const initialValues: SignUp = {
+const initialValues: RegistrationForm = {
   name: '',
   email: '',
   birthdate: '',
   password: '',
 };
 
-function SignUp():ReactElement {
+export default function Register():ReactElement {
   const [userSignUp, setUserSignUp] = useState<ISignUpResult|null>(null);
   const formik = useFormik({
     initialValues,
@@ -91,5 +86,3 @@ function SignUp():ReactElement {
     </>
   );
 }
-
-export default SignUp;

@@ -2,22 +2,16 @@ import React, { ReactElement } from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
+import { VerificationCode, IProps } from './types';
 
 const logger = new Logger('Sign Up Verification');
 
-interface Props {
-  username: string;
-}
-
-interface VerificationCode{
-  code: string;
-}
 
 const initialValues: VerificationCode = {
   code: '',
 };
 
-function SignUpVerification({ username }: Props): ReactElement {
+function RegistrationVerification({ username }: IProps): ReactElement {
   const history = useHistory();
   const formik = useFormik({
     initialValues,
@@ -49,4 +43,4 @@ function SignUpVerification({ username }: Props): ReactElement {
   );
 }
 
-export default SignUpVerification;
+export default RegistrationVerification;
