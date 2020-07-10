@@ -6,7 +6,6 @@ import { SignInForm } from './types';
 
 const logger = new Logger('Sign In');
 
-
 const initialValues: SignInForm = {
   email: '',
   password: '',

@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     fontFamily: 'Archivo Black, Roboto',
+    textDecoration: 'none',
   },
   navBar: {
     display: 'flex',
