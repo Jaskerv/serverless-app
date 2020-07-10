@@ -15,8 +15,10 @@
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [
+        "Requires Lowercase",
         "Requires Uppercase",
-        "Requires Numbers"
+        "Requires Numbers",
+        "Requires Symbols"
     ],
     "requiredAttributes": [
         "birthdate",
