@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import { object, string, date } from 'yup';
 import { Alert } from '@material-ui/lab';
+import { Link } from 'react-router-dom';
 import SignUpVerification from './RegistrationVerification/RegistrationVerification';
 import { RegistrationForm } from './types';
 
@@ -69,7 +70,14 @@ const useStyles = makeStyles((theme) => ({
   hidden: {
     display: 'none',
   },
+  registerText: {
+    marginTop: theme.spacing(2),
+  },
 }));
+
+const InputProps = {
+  shrink: true,
+};
 
 export default function Register():ReactElement {
   const classes = useStyles();
@@ -147,9 +155,7 @@ export default function Register():ReactElement {
               required
               fullWidth
               label="Name"
-              InputLabelProps={{
-                shrink: true,
-              }}
+              InputLabelProps={InputProps}
               error={Boolean(errors.name && touched.name)}
               helperText={errors.name && touched.name ? errors.name : ' '}
               disabled={isSubmitting}
@@ -163,9 +169,7 @@ export default function Register():ReactElement {
               type="date"
               fullWidth
               label="Birth Date"
-              InputLabelProps={{
-                shrink: true,
-              }}
+              InputLabelProps={InputProps}
               error={Boolean(errors.birthdate && touched.birthdate)}
               helperText={errors.birthdate && touched.birthdate ? errors.birthdate : ' '}
               disabled={isSubmitting}
@@ -179,9 +183,7 @@ export default function Register():ReactElement {
               required
               fullWidth
               label="Email"
-              InputLabelProps={{
-                shrink: true,
-              }}
+              InputLabelProps={InputProps}
               error={Boolean(errors.email && touched.email)}
               helperText={errors.email && touched.email ? errors.email : ' '}
               disabled={isSubmitting}
@@ -196,9 +198,7 @@ export default function Register():ReactElement {
               fullWidth
               label="Password"
               placeholder=""
-              InputLabelProps={{
-                shrink: true,
-              }}
+              InputLabelProps={InputProps}
               error={Boolean(errors.password && touched.password)}
               helperText={errors.password && touched.password ? errors.password : PasswordHint}
               disabled={isSubmitting}
@@ -209,19 +209,31 @@ export default function Register():ReactElement {
               variant="contained"
               className={classes.button}
               disabled={isSubmitting}
+              type="submit"
+              formNoValidate
             >
               Register
             </Button>
+            <Typography
+              variant="subtitle2"
+              color="textSecondary"
+              className={classes.registerText}
+            >
+              {'Already have an account? Click here to '}
+              <Link to="/sign-in">
+                sign in
+              </Link>
+            </Typography>
           </Container>
         </form>
       </Fade>
-      <Fade in={Boolean(userSignUp)}>
+      {/* <Fade in={Boolean(userSignUp)}>
         <div
           className={!userSignUp ? classes.hidden : ''}
         >
           <SignUpVerification username={userSignUp!.user?.getUsername()} />
         </div>
-      </Fade>
+      </Fade> */}
     </Container>
   );
 }
