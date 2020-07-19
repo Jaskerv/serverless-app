@@ -32,10 +32,10 @@ const RegistrationSchema = object().shape({
 const logger = new Logger('Sign Up');
 
 const initialValues: RegistrationForm = {
-  name: '',
-  email: '',
-  birthdate: '',
-  password: '',
+  name: 'Kim Nguyen',
+  email: 'viyonog226@winemails.com',
+  birthdate: '03/14/2001',
+  password: 'Kimisahoe123!',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +82,7 @@ const InputProps = {
 export default function Register():ReactElement {
   const classes = useStyles();
   const [userSignUp, setUserSignUp] = useState<ISignUpResult|null>(null);
-  const [AWSError, setAWSError] = useState<String|null>(null);
+  const [AWSError, setAWSError] = useState<Error|null>(null);
   const formik = useFormik({
     initialValues,
     validationSchema: RegistrationSchema,
@@ -100,9 +100,9 @@ export default function Register():ReactElement {
       }).then((signUpResponse) => {
         setUserSignUp(signUpResponse);
         logger.info({ signUpResponse });
-      }).catch((error) => {
-        setAWSError(error);
+      }).catch((error:Error) => {
         logger.error(error);
+        setAWSError(error);
       });
     },
   });
@@ -119,7 +119,6 @@ export default function Register():ReactElement {
       className={classes.container}
     >
       <Typography
-        color="primary"
         variant="h2"
         className={classes.header}
       >
@@ -128,112 +127,112 @@ export default function Register():ReactElement {
       <Divider
         className={classes.divider}
       />
-      <Fade
-        in={Boolean(AWSError)}
+      {!userSignUp && (
+      <form
+        onSubmit={handleSubmit}
+        className={userSignUp ? classes.hidden : ''}
       >
-        <Alert
-          className={classes.alert}
-          severity="error"
+        <Fade
+          in={Boolean(AWSError)}
         >
-          {AWSError}
-        </Alert>
-      </Fade>
-      <Fade in={!userSignUp}>
-        <form
-          onSubmit={handleSubmit}
-          className={userSignUp ? classes.hidden : ''}
-        >
-          <Container
-            maxWidth="xs"
-            className={classes.formContainer}
+          <Alert
+            className={classes.alert}
+            severity="error"
           >
-            <TextField
-              value={name}
-              name="name"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
-              fullWidth
-              label="Name"
-              InputLabelProps={InputProps}
-              error={Boolean(errors.name && touched.name)}
-              helperText={errors.name && touched.name ? errors.name : ' '}
-              disabled={isSubmitting}
-            />
-            <TextField
-              value={birthdate}
-              name="birthdate"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
-              type="date"
-              fullWidth
-              label="Birth Date"
-              InputLabelProps={InputProps}
-              error={Boolean(errors.birthdate && touched.birthdate)}
-              helperText={errors.birthdate && touched.birthdate ? errors.birthdate : ' '}
-              disabled={isSubmitting}
-            />
-            <TextField
-              type="email"
-              value={email}
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
-              fullWidth
-              label="Email"
-              InputLabelProps={InputProps}
-              error={Boolean(errors.email && touched.email)}
-              helperText={errors.email && touched.email ? errors.email : ' '}
-              disabled={isSubmitting}
-            />
-            <TextField
-              value={password}
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
-              type="password"
-              fullWidth
-              label="Password"
-              placeholder=""
-              InputLabelProps={InputProps}
-              error={Boolean(errors.password && touched.password)}
-              helperText={errors.password && touched.password ? errors.password : PasswordHint}
-              disabled={isSubmitting}
-            />
-            <Button
-              onClick={submitForm}
-              fullWidth
-              variant="contained"
-              className={classes.button}
-              disabled={isSubmitting}
-              type="submit"
-              formNoValidate
-            >
-              Register
-            </Button>
-            <Typography
-              variant="subtitle2"
-              color="textSecondary"
-              className={classes.registerText}
-            >
-              {'Already have an account? Click here to '}
-              <Link to="/sign-in">
-                sign in
-              </Link>
-            </Typography>
-          </Container>
-        </form>
-      </Fade>
-      {/* <Fade in={Boolean(userSignUp)}>
-        <div
-          className={!userSignUp ? classes.hidden : ''}
+            {AWSError?.message}
+          </Alert>
+        </Fade>
+        <Container
+          maxWidth="xs"
+          className={classes.formContainer}
         >
-          <SignUpVerification username={userSignUp!.user?.getUsername()} />
-        </div>
-      </Fade> */}
+          <TextField
+            value={name}
+            name="name"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            required
+            fullWidth
+            label="Name"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            error={Boolean(errors.name && touched.name)}
+            helperText={errors.name && touched.name ? errors.name : ' '}
+            disabled={isSubmitting}
+          />
+          <TextField
+            value={birthdate}
+            name="birthdate"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            required
+            type="date"
+            fullWidth
+            label="Birth Date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            error={Boolean(errors.birthdate && touched.birthdate)}
+            helperText={errors.birthdate && touched.birthdate ? errors.birthdate : ' '}
+            disabled={isSubmitting}
+          />
+          <TextField
+            type="email"
+            value={email}
+            name="email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            required
+            fullWidth
+            label="Email"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            error={Boolean(errors.email && touched.email)}
+            helperText={errors.email && touched.email ? errors.email : ' '}
+            disabled={isSubmitting}
+          />
+          <TextField
+            value={password}
+            name="password"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            required
+            type="password"
+            fullWidth
+            label="Password"
+            placeholder=""
+            InputLabelProps={{
+              shrink: true,
+            }}
+            error={Boolean(errors.password && touched.password)}
+            helperText={errors.password && touched.password ? errors.password : PasswordHint}
+            disabled={isSubmitting}
+          />
+          <Button
+            onClick={submitForm}
+            fullWidth
+            variant="contained"
+            className={classes.button}
+            disabled={isSubmitting}
+          >
+            Register
+          </Button>
+          <Typography
+            variant="subtitle2"
+            color="textSecondary"
+            className={classes.registerText}
+          >
+            {'Already have an account? Click here to '}
+            <Link to="/sign-in">
+              sign in
+            </Link>
+          </Typography>
+        </Container>
+      </form>
+      )}
+      {userSignUp && <SignUpVerification username={userSignUp.user.getUsername()} />}
     </Container>
   );
 }
