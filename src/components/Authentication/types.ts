@@ -1,8 +1,9 @@
 export interface RegistrationForm {
   name: string;
   email: string;
-  birthdate: string
+  birthdate: string;
   password: string;
+  passwordConfirm: string;
 }
 
 export interface SignInForm {

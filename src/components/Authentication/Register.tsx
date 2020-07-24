@@ -5,7 +5,9 @@ import { ISignUpResult } from 'amazon-cognito-identity-js';
 import {
   Container, Typography, makeStyles, TextField, Button, Divider, Fade,
 } from '@material-ui/core';
-import { object, string, date } from 'yup';
+import {
+  object, string, date, ref,
+} from 'yup';
 import { Alert } from '@material-ui/lab';
 import { Link } from 'react-router-dom';
 import SignUpVerification from './RegistrationVerification/RegistrationVerification';
@@ -27,15 +29,19 @@ const RegistrationSchema = object().shape({
   password: string()
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, PasswordHint)
     .required('Required'),
+  passwordConfirm: string()
+    .required('Confirm your password')
+    .oneOf([ref('password')], 'Passwords must match'),
 });
 
 const logger = new Logger('Sign Up');
 
 const initialValues: RegistrationForm = {
   name: 'Kim Nguyen',
-  email: 'viyonog226@winemails.com',
+  email: 'bagit36766@lege4h.com',
   birthdate: '03/14/2001',
   password: 'Kimisahoe123!',
+  passwordConfirm: 'Kimisahoe123!',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -88,7 +94,7 @@ export default function Register():ReactElement {
     validationSchema: RegistrationSchema,
     onSubmit: ({
       email, password, birthdate, name,
-    }) => {
+    }, { setSubmitting }) => {
       Auth.signUp({
         username: email,
         password,
@@ -102,6 +108,7 @@ export default function Register():ReactElement {
         logger.info({ signUpResponse });
       }).catch((error:Error) => {
         logger.error(error);
+        setSubmitting(false);
         setAWSError(error);
       });
     },
@@ -109,7 +116,7 @@ export default function Register():ReactElement {
 
   const {
     values: {
-      name, email, birthdate, password,
+      name, email, birthdate, password, passwordConfirm,
     }, handleSubmit, handleChange, submitForm, touched, errors, handleBlur, isSubmitting,
   } = formik;
 
@@ -154,9 +161,7 @@ export default function Register():ReactElement {
             required
             fullWidth
             label="Name"
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={InputProps}
             error={Boolean(errors.name && touched.name)}
             helperText={errors.name && touched.name ? errors.name : ' '}
             disabled={isSubmitting}
@@ -186,9 +191,7 @@ export default function Register():ReactElement {
             required
             fullWidth
             label="Email"
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={InputProps}
             error={Boolean(errors.email && touched.email)}
             helperText={errors.email && touched.email ? errors.email : ' '}
             disabled={isSubmitting}
@@ -203,11 +206,24 @@ export default function Register():ReactElement {
             fullWidth
             label="Password"
             placeholder=""
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={InputProps}
             error={Boolean(errors.password && touched.password)}
             helperText={errors.password && touched.password ? errors.password : PasswordHint}
+            disabled={isSubmitting}
+          />
+          <TextField
+            value={passwordConfirm}
+            name="passwordConfirm"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            required
+            type="password"
+            fullWidth
+            label="Confirm Password"
+            placeholder=""
+            InputLabelProps={InputProps}
+            error={Boolean(errors.passwordConfirm && touched.passwordConfirm)}
+            helperText={errors.passwordConfirm && touched.passwordConfirm ? errors.passwordConfirm : ' '}
             disabled={isSubmitting}
           />
           <Button
