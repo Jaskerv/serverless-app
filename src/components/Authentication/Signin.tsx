@@ -1,63 +1,185 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import {
+  Container, Typography, Divider, makeStyles, TextField, Fade, Button,
+} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { object, string } from 'yup';
+import { SignInForm } from './types';
 
 const logger = new Logger('Sign In');
 
-interface SignIn {
-  email: string;
-  password: string;
-}
+const useStyles = makeStyles((theme) => ({
+  header: {
+    background: `linear-gradient(${theme.palette.grey[400]}, ${theme.palette.primary.light})`,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    marginTop: theme.spacing(2),
+  },
+  divider: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  container: {
+    textAlign: 'center',
+  },
+  formContainer: {
+    '& > *': {
+      marginBottom: theme.spacing(2),
+    },
+    '& > :last-child': {
+      marginBottom: 0,
+    },
+  },
+  button: {
+    backgroundImage: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, #4e4376 51%, #2b5876 100%)`,
+    color: theme.palette.background.default,
+  },
+  alert: {
+    marginBottom: theme.spacing(3),
+  },
+  hidden: {
+    display: 'none',
+  },
+  registerText: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
-const initialValues: SignIn = {
+const initialValues: SignInForm = {
   email: '',
   password: '',
 };
 
+const InputProps = {
+  shrink: true,
+};
+
+const LoginSchema = object().shape({
+  email: string()
+    .email('Invalid email')
+    .required('Required'),
+  password: string()
+    .required('Required'),
+});
+
 const SignIn: React.FunctionComponent = () => {
+  const classes = useStyles();
+  const [AWSError, setAWSError] = useState<Error|null>(null);
+  const history = useHistory();
   const formik = useFormik({
     initialValues,
-    onSubmit: ({ email, password }) => {
+    validationSchema: LoginSchema,
+    onSubmit: ({ email, password }, { setSubmitting }) => {
+      setAWSError(null);
       Auth.signIn(email, password)
         .then((signInResponse) => {
           logger.info('Successful', signInResponse);
-        }).catch((error) => logger.error('Error', error));
+          history.push('/');
+        })
+        .catch((error: Error) => {
+          logger.error('Error', error);
+          setAWSError(error);
+        })
+        .finally(() => setSubmitting(false));
     },
   });
 
-  const { handleSubmit, values, handleChange } = formik;
-  const { email, password } = values;
+  const {
+    values: { email, password },
+    handleSubmit,
+    handleChange,
+    submitForm,
+    isSubmitting,
+    errors,
+    touched,
+    handleBlur,
+  } = formik;
 
   return (
-    <>
+    <Container
+      maxWidth="sm"
+      className={classes.container}
+    >
+      <Typography
+        color="primary"
+        variant="h2"
+        className={classes.header}
+      >
+        Sign In
+      </Typography>
+      <Divider
+        className={classes.divider}
+      />
+      <Fade
+        in={Boolean(AWSError)}
+      >
+        <Alert
+          className={classes.alert}
+          severity="error"
+        >
+          {AWSError?.message}
+        </Alert>
+      </Fade>
       <form
         onSubmit={handleSubmit}
       >
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          value={email}
-          name="email"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          value={password}
-          name="password"
-          onChange={handleChange}
-        />
-        <button
-          type="submit"
+        <Container
+          maxWidth="xs"
+          className={classes.formContainer}
         >
-          Sign In
-        </button>
+          <TextField
+            type="email"
+            label="Email"
+            required
+            value={email}
+            name="email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            fullWidth
+            InputLabelProps={InputProps}
+            error={Boolean(errors.email && touched.email)}
+            helperText={errors.email && touched.email ? errors.email : ' '}
+          />
+          <TextField
+            type="password"
+            label="Password"
+            required
+            value={password}
+            name="password"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            fullWidth
+            InputLabelProps={InputProps}
+            error={Boolean(errors.password && touched.password)}
+            helperText={errors.password && touched.password ? errors.password : ' '}
+          />
+          <Button
+            onClick={submitForm}
+            fullWidth
+            variant="contained"
+            className={classes.button}
+            disabled={isSubmitting}
+            type="submit"
+            formNoValidate
+          >
+            Sign In
+          </Button>
+        </Container>
       </form>
-      <Link to="/sign-up">Sign Up</Link>
-    </>
+      <Typography
+        variant="subtitle2"
+        color="textSecondary"
+        className={classes.registerText}
+      >
+        {'Don\'t have an account? Click here to '}
+        <Link to="/register">
+          register
+        </Link>
+      </Typography>
+    </Container>
   );
 };
 

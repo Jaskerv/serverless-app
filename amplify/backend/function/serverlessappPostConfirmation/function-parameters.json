@@ -7,10 +7,11 @@
     "functionName": "serverlessappPostConfirmation",
     "resourceName": "serverlessappPostConfirmation",
     "parentStack": "auth",
-    "triggerEnvs": [],
-    "triggerDir": "/home/jono/.nvm/versions/node/v14.3.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
+    "triggerEnvs": "[]",
+    "triggerDir": "/home/angelo/.nvm/versions/node/v14.3.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/PostConfirmation",
     "triggerTemplate": "PostConfirmation.json.ejs",
     "roleName": "serverlessappPostConfirmation",
     "skipEdit": true,
-    "GROUP": "free"
+    "GROUP": "free",
+    "triggerEventPath": "PostConfirmation.event.json"
 }
