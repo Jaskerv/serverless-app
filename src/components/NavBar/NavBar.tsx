@@ -3,7 +3,10 @@ import {
   makeStyles, Typography, Container, Button,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { Logger, Auth } from 'aws-amplify';
 import { INavBarProps } from './types';
+
+const logger = new Logger('NavBar');
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -39,7 +42,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NavBar({ user }:INavBarProps): ReactElement {
+async function signOut() {
+  try {
+    await Auth.signOut();
+  } catch (error) {
+    logger.error(error);
+  }
+}
+
+export default function NavBar({ user, userLoading }:INavBarProps): ReactElement {
   const classes = useStyles();
   return (
     <Container
@@ -79,11 +90,12 @@ export default function NavBar({ user }:INavBarProps): ReactElement {
           {user && (
             <>
               <Typography>
-                {user.name}
+                {user.attributes.name }
               </Typography>
               <Button
                 className={classes.button}
                 disableRipple
+                onClick={signOut}
               >
                 Sign Out
               </Button>

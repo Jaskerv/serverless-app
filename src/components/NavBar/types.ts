@@ -1,5 +1,8 @@
-import { User } from '../App/types';
-
 export interface INavBarProps {
-  user: User | null;
+  user: {
+    attributes: {
+      name: String
+    }
+  } | null;
+  userLoading: Boolean
 }

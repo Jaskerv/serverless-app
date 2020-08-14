@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
-import { ISignUpResult } from 'amazon-cognito-identity-js';
 import {
   Container, Typography, makeStyles, TextField, Button, Divider, Fade,
 } from '@material-ui/core';
@@ -10,6 +9,7 @@ import {
 } from 'yup';
 import { Alert } from '@material-ui/lab';
 import { Link } from 'react-router-dom';
+import { ISignUpResult } from 'amazon-cognito-identity-js';
 import SignUpVerification from './RegistrationVerification/RegistrationVerification';
 import { RegistrationForm } from './types';
 
@@ -95,6 +95,7 @@ export default function Register():ReactElement {
     onSubmit: ({
       email, password, birthdate, name,
     }, { setSubmitting }) => {
+      setAWSError(null);
       Auth.signUp({
         username: email,
         password,

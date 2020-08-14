@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Auth, Logger } from 'aws-amplify';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Container, Typography, Divider, makeStyles, TextField, Fade, Button,
 } from '@material-ui/core';
@@ -68,13 +68,16 @@ const LoginSchema = object().shape({
 const SignIn: React.FunctionComponent = () => {
   const classes = useStyles();
   const [AWSError, setAWSError] = useState<Error|null>(null);
+  const history = useHistory();
   const formik = useFormik({
     initialValues,
     validationSchema: LoginSchema,
     onSubmit: ({ email, password }, { setSubmitting }) => {
+      setAWSError(null);
       Auth.signIn(email, password)
         .then((signInResponse) => {
           logger.info('Successful', signInResponse);
+          history.push('/');
         })
         .catch((error: Error) => {
           logger.error('Error', error);
@@ -92,6 +95,7 @@ const SignIn: React.FunctionComponent = () => {
     isSubmitting,
     errors,
     touched,
+    handleBlur,
   } = formik;
 
   return (
@@ -133,6 +137,7 @@ const SignIn: React.FunctionComponent = () => {
             value={email}
             name="email"
             onChange={handleChange}
+            onBlur={handleBlur}
             fullWidth
             InputLabelProps={InputProps}
             error={Boolean(errors.email && touched.email)}
@@ -145,6 +150,7 @@ const SignIn: React.FunctionComponent = () => {
             value={password}
             name="password"
             onChange={handleChange}
+            onBlur={handleBlur}
             fullWidth
             InputLabelProps={InputProps}
             error={Boolean(errors.password && touched.password)}

@@ -48,6 +48,7 @@ function RegistrationVerification({ username }: IProps): ReactElement {
     initialValues,
     validationSchema,
     onSubmit: ({ code }, { setSubmitting }) => {
+      setAWSError(null);
       Auth.confirmSignUp(username, code)
         .then((verificationResponse) => {
           logger.info({ verificationResponse });
