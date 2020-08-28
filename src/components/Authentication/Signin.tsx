@@ -142,6 +142,7 @@ const SignIn: React.FunctionComponent = () => {
             InputLabelProps={InputProps}
             error={Boolean(errors.email && touched.email)}
             helperText={errors.email && touched.email ? errors.email : ' '}
+            autoComplete="email"
           />
           <TextField
             type="password"
@@ -169,6 +170,16 @@ const SignIn: React.FunctionComponent = () => {
           </Button>
         </Container>
       </form>
+      <Typography
+        variant="subtitle2"
+        color="textSecondary"
+        className={classes.registerText}
+      >
+        {'Forgot your password? Click here to '}
+        <Link to="/recover-password">
+          reset
+        </Link>
+      </Typography>
       <Typography
         variant="subtitle2"
         color="textSecondary"
