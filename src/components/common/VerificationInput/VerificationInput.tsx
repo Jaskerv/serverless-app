@@ -1,8 +1,7 @@
 import React, {
   ReactElement,
-  useMemo,
   useState,
-  KeyboardEvent,
+  FormEvent,
 } from 'react';
 import {
   Box,
@@ -16,35 +15,39 @@ export interface VerificationInputProps {
   spacing: GridSpacing
 }
 
-const Input = (): ReactElement => {
-  const [value, setValue] = useState('');
+interface InputProps{
+  value: String,
+  onChange: (event: FormEvent) => void
+}
 
-  const handleChange = (event: KeyboardEvent) => {
-    setValue(event.key.replace(/[^a-z0-9]/gi, ''));
-  };
-
-  return (
-    <TextField
-      variant="outlined"
-      value={value}
-      onKeyPress={handleChange}
-    />
-  );
-};
-
-const generateInputs = (inputSize: Number): Array<Function> => (
-  Array(inputSize).fill(0).map(() => Input)
+const Input = ({ value, onChange }: InputProps): ReactElement => (
+  <TextField
+    variant="outlined"
+    value={value}
+    onChange={onChange}
+  />
 );
 
 export default function VerificationInput(props: VerificationInputProps): ReactElement {
   const { inputSize = 1, spacing = 1 } = props;
-  const inputs = useMemo(() => generateInputs(inputSize), [inputSize]);
+
+  const [inputValues, setInputValues] = useState<String[]>(Array(inputSize > 12 ? 12 : inputSize).map(() => ''));
+
+  const handleChange = (index: number) => (event: FormEvent) => {
+    setInputValues((prevVal) => {
+      const newValue: String[] = [...prevVal];
+      const target = event.target as HTMLInputElement;
+      newValue[index] = target.value;
+      return newValue;
+    });
+  };
+
   return (
     <Box>
-      <Grid container spacing={spacing}>
-        {inputs.map((Component) => (
-          <Grid item>
-            <Component />
+      <Grid container spacing={spacing > 10 ? 10 : spacing}>
+        {inputValues.map((value, index) => (
+          <Grid item key={index}>
+            <Input value={value} onChange={handleChange(index)} />
           </Grid>
         ))}
       </Grid>
