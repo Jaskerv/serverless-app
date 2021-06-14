@@ -25,5 +25,6 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'react/jsx-props-no-spreading': 'off'
   },
 };

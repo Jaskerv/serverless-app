@@ -12,14 +12,13 @@
       "AmplifyAppId": "d1o85fovmfmai8"
     },
     "categories": {
-      "auth": {
-        "userPoolGroups": {},
-        "serverlessapp": {}
-      },
       "function": {
         "serverlessappPostConfirmation": {
           "GROUP": ""
         }
+      },
+      "auth": {
+        "serverlessApp": {}
       }
     }
   }

@@ -1,6 +1,6 @@
 {
-    "resourceNameTruncated": "serverea3c2f4e",
-    "userPoolName": "serverlessappuserpool",
+    "resourceNameTruncated": "server9c0f3151",
+    "userPoolName": "serverlessApp-user-pool",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -10,7 +10,7 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Welcome to Jono Yan's Serverless Web App",
+    "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
@@ -28,30 +28,34 @@
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": "7",
     "userpoolClientWriteAttributes": [
+        "address",
+        "family_name",
+        "middle_name",
+        "given_name",
+        "nickname",
+        "phone_number",
+        "preferred_username",
         "birthdate",
         "email",
         "name"
     ],
     "userpoolClientReadAttributes": [
+        "address",
         "birthdate",
         "email",
-        "name"
+        "family_name",
+        "middle_name",
+        "gender",
+        "given_name",
+        "name",
+        "nickname",
+        "phone_number"
     ],
-    "userpoolClientLambdaRole": "serverea3c2f4e_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "server9c0f3151_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": true,
-    "useDefault": "manual",
+    "sharedId": "9c0f3151",
+    "resourceName": "serverlessApp",
     "authSelections": "userPoolOnly",
-    "resourceName": "serverlessapp",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroups": true,
-    "adminQueries": false,
-    "triggers": "{\"PostConfirmation\":[\"add-to-group\"]}",
-    "hostedUI": false,
-    "userPoolGroupList": [
-        "free"
-    ],
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -64,21 +68,19 @@
             "Arn"
         ]
     },
+    "useDefault": "manual",
+    "usernameAttributes": [
+        "email"
+    ],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{}",
+    "hostedUI": false,
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
     "parentStack": {
         "Ref": "AWS::StackId"
     },
-    "permissions": [
-        "{\"policyName\":\"AddToGroupCognito\",\"trigger\":\"PostConfirmation\",\"effect\":\"Allow\",\"actions\":[\"cognito-idp:AdminAddUserToGroup\",\"cognito-idp:GetGroup\",\"cognito-idp:CreateGroup\"],\"resource\":{\"paramType\":\"!GetAtt\",\"keys\":[\"UserPool\",\"Arn\"]}}"
-    ],
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "serverlessappPostConfirmation",
-            "triggerProvider": "Cognito",
-            "attributes": [
-                "Arn",
-                "Name"
-            ]
-        }
-    ]
+    "permissions": [],
+    "dependsOn": []
 }

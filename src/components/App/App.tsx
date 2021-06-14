@@ -10,6 +10,7 @@ import SignIn from '../Authentication/Signin';
 import Register from '../Authentication/Register';
 import NavBar from '../NavBar/NavBar';
 import './App.css';
+import ForgotPassoword from '../Authentication/RecoverPassoword';
 
 Amplify.Logger.LOG_LEVEL = 'INFO';
 
@@ -59,9 +60,8 @@ function App() {
     }
   };
 
-  Hub.listen('auth', listener);
-
   useEffect(() => {
+    Hub.listen('auth', listener);
     Auth.currentAuthenticatedUser({
       bypassCache: false,
     }).then((user) => setCognitoUser(user))
@@ -82,6 +82,9 @@ function App() {
             </Route>
             <Route path="/sign-in">
               <SignIn />
+            </Route>
+            <Route path="/recover-password">
+              <ForgotPassoword />
             </Route>
             <Route path="/">
               <Container>
