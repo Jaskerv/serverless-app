@@ -37,11 +37,11 @@ const RegistrationSchema = object().shape({
 const logger = new Logger('Sign Up');
 
 const initialValues: RegistrationForm = {
-  name: 'John Doe',
+  name: '♥ Ava Chen ♥',
   email: 'bagit36766@lege4h.com',
-  birthdate: '01/01/1990',
-  password: 'Password123!',
-  passwordConfirm: 'Password123!',
+  birthdate: '10/05/1999',
+  password: 'Avaismybaby123!',
+  passwordConfirm: 'Avaismybaby123!',
 };
 
 const useStyles = makeStyles((theme) => ({
