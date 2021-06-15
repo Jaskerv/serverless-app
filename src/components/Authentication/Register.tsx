@@ -39,7 +39,7 @@ const logger = new Logger('Sign Up');
 const initialValues: RegistrationForm = {
   name: 'John Doe',
   email: 'bagit36766@lege4h.com',
-  birthdate: '03/14/2001',
+  birthdate: '01/01/1990',
   password: 'Password123!',
   passwordConfirm: 'Password123!',
 };
